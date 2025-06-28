@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Costo del Servicio</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        form {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 6px;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        input[type="submit"],
+        button {
+            margin: 20px 10px 0 10px;
+            padding: 10px 20px;
+            font-size: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover,
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Costo del Servicio - Ingeniería Clínica</h1>
+
+    <form method="POST">
+
+    <div class="form-section">
+    <h3 style="text-align: center;">Centro de Costos</h3>
+</div>
+
+
+</div>
+
+        <div class="form-section">
+            <h3>Mano de Obra</h3>
+            <label>Apellidos y Nombres:</label>
+            <input type="text" name="nombre_tecnico">
+
+            <label>Especialidad:</label>
+            <input type="text" name="especialidad">
+
+            <label>Horas Hombre:</label>
+            <input type="number" name="horas">
+
+            <label>Valor por Hora:</label>
+            <input type="number" name="valor_hora">
+
+            <label>Costo Mano de Obra:</label>
+            <input type="number" name="costo_mo">
+        </div>
+
+        <div class="form-section">
+            <h3>Repuesto y Materiales</h3>
+            <label>MINSA / EMPRESA:</label>
+            <input type="text" name="origen">
+
+            <label>Descripción:</label>
+            <input type="text" name="descripcion_material">
+
+            <label>Unidad de Medida (U.M.):</label>
+            <input type="text" name="um">
+
+            <label>Cantidad:</label>
+            <input type="number" name="cantidad">
+
+            <label>Costo Unitario:</label>
+            <input type="number" name="costo_unitario">
+
+            <label>Costo Parcial:</label>
+            <input type="number" name="costo_parcial">
+        </div>
+
+        <div class="form-section">
+            <h3>Resumen de Costos</h3>
+            <label>Costo Total por Mano de Obra:</label>
+            <input type="number" name="total_mo">
+
+            <label>Costo Total por Repuestos y Materiales:</label>
+            <input type="number" name="total_materiales">
+
+            <label>Otros Gastos (detallar):</label>
+            <input type="text" name="otros_gastos">
+
+            <label>Impuestos de Ley:</label>
+            <input type="number" name="impuestos">
+
+            <label>Total General:</label>
+            <input type="number" name="total_general">
+        </div>
+
+        <div class="form-section">
+            <label>Firma del ejecutor de mantenimiento:</label>
+            <input type="text" name="firma_ejecutor">
+
+            <label>Vo. Bo. Jefe de Oficina de Ingeniería Clínica o Mantenimiento:</label>
+            <input type="text" name="firma_jefe">
+        </div>
+
+        
+
+    </form>
+</body>
+</html>
