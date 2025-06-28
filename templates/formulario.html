@@ -3,42 +3,8 @@
 <head>
     <title>Formulario OTM</title>
     <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            padding: 20px;
-        }
-        .form-section {
-            background: white;
-            padding: 20px;
-            margin-bottom: 25px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        input[type="text"],
-        input[type="date"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            padding: 6px;
-            margin-top: 4px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        textarea {
-            resize: vertical;
-        }
-        .checkbox-group {
-            display: flex;
-            gap: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='static/css/style.css') }}">
+
 </head>
 <body>
 
