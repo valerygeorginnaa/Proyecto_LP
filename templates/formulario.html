@@ -1,62 +1,77 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Formulario simple</title>
+    <title>OTM - Mantenimiento de Equipos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            font-family: Arial;
+            margin: 40px;
+            background-color: #f9f9f9;
         }
-
-        .formulario {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        .seccion {
+            margin-bottom: 20px;
         }
-
-        input[type="text"], input[type="number"] {
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="date"], input[type="number"], textarea {
             width: 100%;
-            padding: 10px;
+            padding: 5px;
             margin-top: 5px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        input[type="submit"] {
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="formulario">
-        <h1>Registro</h1>
-        <form method="POST">
-            Nombre:<br>
-            <input type="text" name="nombre"><br>
-            Edad:<br>
-            <input type="number" name="edad"><br>
-            <input type="submit" value="Enviar">
-        </form>
-    </div>
+    <h1>Orden de Trabajo de Ingeniería Clínica</h1>
+    <form method="POST">
+
+        <div class="seccion">
+            <label>Hospital:</label>
+            <input type="text" name="hospital" value="Hospital Nacional Arzobispo Loayza">
+
+            <label>Fecha:</label>
+            <input type="date" name="fecha">
+
+            <label>Número:</label>
+            <input type="text" name="numero">
+        </div>
+
+        <div class="seccion">
+            <label>Área Usuaria:</label>
+            <input type="text" name="area">
+
+            <label>Ubicación Física:</label>
+            <input type="text" name="ubicacion">
+        </div>
+
+        <div class="seccion">
+            <label>Denominación del Equipo:</label>
+            <input type="text" name="denominacion">
+
+            <label>Marca:</label>
+            <input type="text" name="marca">
+
+            <label>Modelo:</label>
+            <input type="text" name="modelo">
+
+            <label>Serie:</label>
+            <input type="text" name="serie">
+
+            <label>Código Patrimonial:</label>
+            <input type="text" name="codigo_patrimonial">
+        </div>
+
+        <div class="seccion">
+            <label>Problema presentado:</label>
+            <textarea name="problema" rows="3"></textarea>
+        </div>
+
+        <!-- (Aquí continuarías con las secciones de firma, diagnóstico técnico, mantenimiento, etc.) -->
+
+        <input type="submit" value="Guardar OTM">
+
+    </form>
 </body>
 </html>
