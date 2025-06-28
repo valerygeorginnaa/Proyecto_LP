@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Formulario OTM</title>
     <meta charset="UTF-8">
+    <title>Formulario OTM</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -39,12 +39,15 @@
             gap: 20px;
         }
     </style>
+   
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 
     <h1 style="text-align: center;">Orden de Trabajo de Ingeniería Clínica</h1>
 
-    <form method="POST">
+    <form method="POST" action="{{ url_for('formulario') }}">
 
         <div class="form-section">
             <label>Dependencia de Salud:</label>
@@ -80,33 +83,32 @@
             <input type="text" name="codigo_patrimonial">
         </div>
 
-      <div class="form-section">
-    <label>Problema presentado en el equipo:</label>
-    <textarea name="problema" rows="3"></textarea>
+        <div class="form-section">
+            <label>Problema presentado en el equipo:</label>
+            <textarea name="problema" rows="3"></textarea>
 
-    <div style="display: flex; gap: 20px;">
-        <div style="flex: 1;">
-            <label>Firma y sello del solicitante:</label>
-            <input type="text" name="firma_solicitante">
-        </div>
-        <div style="flex: 1;">
-            <label>Fecha de solicitud del servicio:</label>
-            <input type="date" name="fecha_solicitud">
-        </div>
-    </div>
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1;">
+                    <label>Firma y sello del solicitante:</label>
+                    <input type="text" name="firma_solicitante">
+                </div>
+                <div style="flex: 1;">
+                    <label>Fecha de solicitud del servicio:</label>
+                    <input type="date" name="fecha_solicitud">
+                </div>
+            </div>
 
-    <div style="display: flex; gap: 20px; margin-top: 10px;">
-        <div style="flex: 1;">
-            <label>Firma y sello de recepción:</label>
-            <input type="text" name="firma_recepcion">
+            <div style="display: flex; gap: 20px; margin-top: 10px;">
+                <div style="flex: 1;">
+                    <label>Firma y sello de recepción:</label>
+                    <input type="text" name="firma_recepcion">
+                </div>
+                <div style="flex: 1;">
+                    <label>Fecha de recepción:</label>
+                    <input type="date" name="fecha_recepcion">
+                </div>
+            </div>
         </div>
-        <div style="flex: 1;">
-            <label>Fecha de recepción:</label>
-            <input type="date" name="fecha_recepcion">
-        </div>
-    </div>
-</div>
-
 
         <div class="form-section">
             <label>Diagnóstico Técnico:</label>
@@ -152,12 +154,20 @@
             <textarea name="recomendaciones" rows="3"></textarea>
         </div>
 
-        <input type="submit" value="Guardar Orden de Trabajo">
+        <div style="text-align: center; margin-top: 20px;">
+            <input type="submit" value="Siguiente ▶️">
+        </div>
 
     </form>
-    <div style="text-align: center; margin-top: 20px;">
-    <input type="submit" value="Siguiente ▶️">
+    <div class="text-center mt-4">
+    <button type="button" class="btn btn-success me-2">
+        ⬇️ Descargar PDF
+    </button>
+    <button type="button" class="btn btn-primary">
+        ⬇️ Descargar Excel
+    </button>
 </div>
+
 
 </body>
 </html>
