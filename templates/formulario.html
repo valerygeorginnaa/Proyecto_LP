@@ -63,7 +63,7 @@
 
     <h1>Orden de Trabajo de Ingeniería Clínica</h1>
 
-    <form method="POST" action="{{ url_for('formulario') }}">
+    <form method="POST" action="{{ url_for('formulario') }}" enctype="multipart/form-data">
 
         <div class="form-section">
             <div class="mb-3">
@@ -121,8 +121,8 @@
 
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <label>Firma y sello del solicitante:</label>
-                    <input type="text" name="firma_solicitante" class="form-control">
+                    <label>Subir Firma del Solicitante (imagen o PDF):</label>
+                    <input type="file" name="firma_archivo" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
                 </div>
                 <div class="col-md-6">
                     <label>Fecha de solicitud del servicio:</label>
@@ -132,8 +132,8 @@
 
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <label>Firma y sello de recepción:</label>
-                    <input type="text" name="firma_recepcion" class="form-control">
+                    <label>Subir Sello de Recepción (imagen o PDF):</label>
+                    <input type="file" name="sello_archivo" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
                 </div>
                 <div class="col-md-6">
                     <label>Fecha de recepción:</label>
