@@ -1,13 +1,17 @@
-from flask import Flask, render_template, request, redirect, url_for
-import os
+import datetime
 
+from flask import Flask, render_template, request, redirect, url_for,send_file, session
+import os
+import pandas as pd
+from io import BytesIO
+from openpyxl.utils import get_column_letter
 app = Flask(__name__)
 
 # Carpeta para guardar las firmas
 UPLOAD_FOLDER = 'static/firmas'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
+app.secret_key = '1234'
 @app.route('/')
 def inicio():
     return redirect(url_for('formulario'))
@@ -41,6 +45,7 @@ def formulario():
         print("\n📝 Datos del Formulario 1:")
         for k, v in datos.items():
             print(f"{k}: {v}")
+        session['datos_formulario'] = datos
 
         return redirect(url_for('formulario2'))
 
@@ -88,6 +93,29 @@ def formulario2():
         return "Formulario completo enviado correctamente ✅"
 
     return render_template('formulario2.html')
+@app.route('/descargar_excel')
+def descargar_excel():
+    datos = session.get('datos_formulario', {})
+    if not datos:
+        return "No hay datos para exportar", 400
 
+    df = pd.DataFrame([datos])
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='openpyxl') as writer:
+        df.to_excel(writer, index=False)
+        worksheet = writer.sheets['Sheet1']
+        for i, col in enumerate(df.columns, 1):
+            max_length = max(
+                [len(str(s)) for s in df[col].values] + [len(str(col))]
+            )
+            worksheet.column_dimensions[get_column_letter(i)].width = max_length + 2
+
+    output.seek(0)
+    return send_file(
+        output,
+        download_name=f'formulario_{datetime.datetime.now().strftime("%Y-%m-%d")}.xlsx',
+        as_attachment=True,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 if __name__ == '__main__':
     app.run(debug=True)
