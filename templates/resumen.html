@@ -1,52 +1,52 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Resumen de Formularios</title>
+    <title>Resumen de OTMs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
-            background: #f8f9fa;
+            background-color: #f8f9fa;
             padding: 30px;
         }
         h1 {
+            background-color: #004080;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
             text-align: center;
-            color: #004080;
             margin-bottom: 30px;
         }
         table {
             font-size: 14px;
         }
-        .table-container {
-            overflow-x: auto;
+        th {
+            background-color: #0d6efd;
+            color: white;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <h1>Resumen de Formularios de OTM</h1>
+    <h1>Resumen de Órdenes de Trabajo de Mantenimiento (OTM)</h1>
 
-    {% if registros %}
-        <div class="table-container">
-            <table class="table table-striped table-bordered table-hover">
-                <thead class="table-dark">
+    {% if otms %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
-                        {% for key in registros[0].keys() %}
+                        {% for key in otms[0].keys() %}
                             <th>{{ key.replace('_', ' ').capitalize() }}</th>
                         {% endfor %}
                     </tr>
                 </thead>
                 <tbody>
-                    {% for registro in registros %}
+                    {% for otm in otms %}
                         <tr>
-                            {% for valor in registro.values() %}
-                                <td>
-                                    {% if valor.endswith('.jpg') or valor.endswith('.png') %}
-                                        <img src="{{ url_for('static', filename=valor.split('static/')[-1]) }}" alt="Firma" width="80">
-                                    {% else %}
-                                        {{ valor }}
-                                    {% endif %}
-                                </td>
+                            {% for value in otm.values() %}
+                                <td>{{ value }}</td>
                             {% endfor %}
                         </tr>
                     {% endfor %}
@@ -54,8 +54,8 @@
             </table>
         </div>
     {% else %}
-        <div class="alert alert-info text-center">
-            No hay formularios registrados aún.
+        <div class="alert alert-warning text-center">
+            No se han registrado órdenes aún.
         </div>
     {% endif %}
 
