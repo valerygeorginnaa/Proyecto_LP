@@ -22,11 +22,6 @@
             text-align: center;
         }
 
-        form {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
         .form-section {
             background: white;
             padding: 20px;
@@ -80,7 +75,8 @@
 
     <h1>Costo del Servicio - Ingeniería Clínica</h1>
 
-    <form method="POST" enctype="multipart/form-data">
+    <!-- ✅ AÑADIDO: ACTION Y ENCTYPE -->
+    <form method="POST" action="{{ url_for('formulario2') }}" enctype="multipart/form-data">
 
         <div class="form-section">
             <h3 style="text-align: center;">Centro de Costos</h3>
@@ -145,18 +141,21 @@
 
         <div class="form-section">
             <h3>Firmas Digitales</h3>
-            <label>Firma del ejecutor de mantenimiento (PDF o imagen):</label>
-            <input type="file" name="firma_ejecutor_archivo" accept=".jpg,.jpeg,.png,.pdf">
 
+            <!-- ✅ NOMBRE CORREGIDO -->
+            <label>Firma del ejecutor de mantenimiento (PDF o imagen):</label>
+            <input type="file" name="firma_ejecutor_file" accept=".jpg,.jpeg,.png,.pdf">
+
+            <!-- ✅ NOMBRE CORREGIDO -->
             <label>Vo. Bo. Jefe de Oficina de Ingeniería Clínica o Mantenimiento (PDF o imagen):</label>
-            <input type="file" name="firma_jefe_archivo" accept=".jpg,.jpeg,.png,.pdf">
+            <input type="file" name="firma_jefe_file" accept=".jpg,.jpeg,.png,.pdf">
         </div>
 
         <div style="text-align: center; margin-top: 20px;">
             <a href="{{ url_for('formulario') }}">
                 <button type="button">◀️ Página anterior</button>
             </a>
-            <input type="submit" value="Enviar formulario ✅">
+            <input type="submit" value="Guardar OTM ✅">
         </div>
     </form>
 
