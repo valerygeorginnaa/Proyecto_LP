@@ -1,12 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
-import os
 
 app = Flask(__name__)
 
-# Carpeta para guardar las firmas
-UPLOAD_FOLDER = 'static/firmas'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# Variables globales para almacenar datos de OTM
+otm_parcial = {}   # Guarda temporalmente los datos del Formulario 1
+otm_data = []      # Lista de OTMs completas
 
 @app.route('/')
 def inicio():
@@ -14,80 +12,59 @@ def inicio():
 
 @app.route('/formulario', methods=['GET', 'POST'])
 def formulario():
+    global otm_parcial
+
     if request.method == 'POST':
         datos = {}
         campos = [
             'dependencia', 'numero', 'fecha', 'area', 'ubicacion',
             'denominacion', 'marca', 'modelo', 'serie', 'codigo_patrimonial',
-            'problema', 'firma_solicitante', 'fecha_solicitud',
-            'firma_recepcion', 'fecha_recepcion', 'diagnostico',
+            'problema', 'fecha_solicitud', 'fecha_recepcion', 'diagnostico',
             'encargado', 'fecha_mantenimiento', 'trabajo', 'fecha_inicio',
             'fecha_termino', 'garantia', 'costo', 'recomendaciones'
         ]
-        
+
         for campo in campos:
-            valor = request.form.get(campo, '').strip()
-            if valor:
-                datos[campo] = valor
+            datos[campo] = request.form.get(campo, '').strip()
 
-        prioridad = request.form.get('prioridad')
-        if prioridad:
-            datos['prioridad'] = prioridad
+        datos['prioridad'] = request.form.get('prioridad', '')
+        datos['modalidad'] = request.form.getlist('modalidad[]')
 
-        modalidades = request.form.getlist('modalidad[]')
-        if modalidades:
-            datos['modalidad'] = modalidades
-
-        print("\n📝 Datos del Formulario 1:")
-        for k, v in datos.items():
-            print(f"{k}: {v}")
-
+        otm_parcial = datos
         return redirect(url_for('formulario2'))
 
     return render_template('formulario.html')
 
 @app.route('/formulario2', methods=['GET', 'POST'])
 def formulario2():
+    global otm_parcial, otm_data
+
     if request.method == 'POST':
         datos_form2 = {}
         campos_form2 = [
             'nombre_tecnico', 'especialidad', 'horas', 'valor_hora', 'costo_mo',
             'origen', 'descripcion_material', 'um', 'cantidad', 'costo_unitario',
             'costo_parcial', 'total_mo', 'total_materiales', 'otros_gastos',
-            'impuestos', 'total_general', 'firma_ejecutor', 'firma_jefe'
+            'impuestos', 'total_general'
         ]
 
         for campo in campos_form2:
-            valor = request.form.get(campo, '').strip()
-            if valor:
-                datos_form2[campo] = valor
+            datos_form2[campo] = request.form.get(campo, '').strip()
 
-        # Subida de archivos de firma/sello
-        firmas = {}
-        archivos = {
-            'firma_ejecutor_archivo': 'firma_ejecutor_file',
-            'firma_jefe_archivo': 'firma_jefe_file'
-        }
+        # Fusionar los datos del formulario 1 y 2
+        otm_completa = {**otm_parcial, **datos_form2}
+        otm_data.append(otm_completa)
 
-        for clave, input_file in archivos.items():
-            archivo = request.files.get(input_file)
-            if archivo and archivo.filename:
-                ext = archivo.filename.rsplit('.', 1)[-1].lower()
-                if ext in ['jpg', 'jpeg', 'png', 'pdf']:
-                    ruta = os.path.join(app.config['UPLOAD_FOLDER'], archivo.filename)
-                    archivo.save(ruta)
-                    firmas[clave] = ruta
+        # Limpiar datos parciales
+        otm_parcial = {}
 
-        print("\n📄 Datos del Formulario 2:")
-        for k, v in datos_form2.items():
-            print(f"{k}: {v}")
-        print("\n📎 Archivos de firma:")
-        for k, v in firmas.items():
-            print(f"{k}: {v}")
-
-        return "Formulario completo enviado correctamente ✅"
+        return redirect(url_for('resumen'))
 
     return render_template('formulario2.html')
+
+@app.route('/resumen')
+def resumen():
+    return render_template('resumen.html', otms=otm_data)
 
 if __name__ == '__main__':
     app.run(debug=True)
