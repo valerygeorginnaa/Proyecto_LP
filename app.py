@@ -5,6 +5,8 @@
 
 
 from flask import Flask, render_template, request, redirect, url_for, session,send_file
+from reportlab.pdfgen import canvas
+from io import BytesIO
 
 app = Flask(__name__)
 app.secret_key = 'supersecreto'  # Necesario para sesiones
@@ -118,6 +120,39 @@ def descargar_excel():
         as_attachment=True,
         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
+
+# -> pip install reportlab 
+@app.route('/descargar_pdf/<int:index>')
+def descargar_pdf(index):
+    if 0 <= index < len(otm_data):
+        otm = otm_data[index]
+
+        # Crear un PDF en memoria
+        buffer = BytesIO()
+        p = canvas.Canvas(buffer)
+        p.setFont("Helvetica", 12)
+
+        y = 800
+        for key, value in otm.items():
+            texto = f"{key.replace('_', ' ').capitalize()}: {value}"
+            p.drawString(50, y, texto)
+            y -= 20
+            if y < 50:
+                p.showPage()
+                y = 800
+
+        p.save()
+        buffer.seek(0)
+
+        return send_file(
+            buffer,
+            as_attachment=True,
+            download_name=f'OTM-{index+1}.pdf',
+            mimetype='application/pdf'
+        )
+
+    return "OTM no encontrada", 404
+
 
 if __name__ == '__main__':
     app.run(debug=True)
