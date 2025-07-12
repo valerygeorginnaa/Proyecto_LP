@@ -3,153 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulario OTM</title>
-
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+     <!-- En el <head> de resumen.html y login.html -->
+<link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/x-icon">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
             background: #f2f6fa;
             padding: 30px;
         }
-
         .form-section {
             background: white;
-            padding: 25px;
-            margin-bottom: 30px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            padding: 25px 30px;
+            margin-bottom: 32px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
         }
-
+        .form-section h4 {
+            color: #004080;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
         label {
             font-weight: 600;
             margin-top: 10px;
         }
-
-        textarea {
-            resize: vertical;
-        }
-
-        h1 {
-            background-color: #004080;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .btn-custom {
-            padding: 10px 20px;
-            font-size: 15px;
-            border-radius: 6px;
-            margin: 10px;
-        }
-
-        .btn-success:hover, .btn-primary:hover {
-            opacity: 0.9;
-        }
-
-        .checkbox-group {
+        .checkbox-group, .radio-group {
             display: flex;
             gap: 20px;
             margin-top: 10px;
         }
+        .btn-custom {
+            padding: 12px 28px;
+            font-size: 17px;
+            border-radius: 8px;
+            margin: 10px;
+        }
+        .btn-success:hover, .btn-primary:hover {
+            opacity: 0.92;
+        }
+        .section-icon {
+            font-size: 22px;
+            margin-right: 8px;
+            color: #0d6efd;
+        }
+        textarea {
+            resize: vertical;
+        }
     </style>
 </head>
 <body>
-
-    <h1>Orden de Trabajo de Ingeniería Clínica</h1>
-
+    <h1 class="bg-primary text-white p-3 rounded text-center mb-4">
+        <i class="bi bi-clipboard-plus"></i> Orden de Trabajo de Ingeniería Clínica
+    </h1>
     <form method="POST" action="{{ url_for('formulario') }}" enctype="multipart/form-data">
-
+        <!-- Sección 1: Datos del equipo -->
         <div class="form-section">
+            <h4><i class="bi bi-hospital section-icon"></i> Datos del Equipo</h4>
             <div class="mb-3">
                 <label>Dependencia de Salud:</label>
-                <input type="text" name="dependencia" class="form-control" value="Hospital Nacional Arzobispo Loayza">
+                <input type="text" name="dependencia" class="form-control" value="Hospital Nacional Arzobispo Loayza" >
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label>Número de OTM:</label>
-                    <input type="text" name="numero" class="form-control">
+                    <input type="text" name="numero" class="form-control" >
                 </div>
                 <div class="col-md-6 mb-3">
                     <label>Fecha:</label>
-                    <input type="date" name="fecha" class="form-control">
+                    <input type="date" name="fecha" class="form-control" >
                 </div>
             </div>
             <div class="mb-3">
                 <label>Área Usuaria:</label>
-                <input type="text" name="area" class="form-control">
+                <input type="text" name="area" class="form-control" >
             </div>
             <div class="mb-3">
                 <label>Ubicación Física:</label>
-                <input type="text" name="ubicacion" class="form-control">
+                <input type="text" name="ubicacion" class="form-control" >
             </div>
         </div>
-
+        <!-- Sección 2: Identificación del equipo -->
         <div class="form-section">
+            <h4><i class="bi bi-cpu section-icon"></i> Identificación del Equipo</h4>
             <div class="mb-3">
                 <label>Denominación del Equipo:</label>
-                <input type="text" name="denominacion" class="form-control">
+                <input type="text" name="denominacion" class="form-control" >
             </div>
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label>Marca:</label>
-                    <input type="text" name="marca" class="form-control">
+                    <input type="text" name="marca" class="form-control" >
                 </div>
                 <div class="col-md-4 mb-3">
                     <label>Modelo:</label>
-                    <input type="text" name="modelo" class="form-control">
+                    <input type="text" name="modelo" class="form-control" >
                 </div>
                 <div class="col-md-4 mb-3">
                     <label>Serie:</label>
-                    <input type="text" name="serie" class="form-control">
+                    <input type="text" name="serie" class="form-control" >
                 </div>
             </div>
             <div class="mb-3">
                 <label>Código Patrimonial:</label>
-                <input type="text" name="codigo_patrimonial" class="form-control">
+                <input type="text" name="codigo_patrimonial" class="form-control" >
             </div>
         </div>
-
+        <!-- Sección 3: Solicitud y recepción -->
         <div class="form-section">
+            <h4><i class="bi bi-person-check section-icon"></i> Solicitud y Recepción</h4>
             <label>Problema presentado en el equipo:</label>
-            <textarea name="problema" class="form-control" rows="3"></textarea>
-
+            <textarea name="problema" class="form-control" rows="3" ></textarea>
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <label>Subir Firma del Solicitante (imagen o PDF):</label>
+                    <label>Firma del Solicitante (imagen o PDF):</label>
                     <input type="file" name="firma_archivo" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
                 </div>
                 <div class="col-md-6">
                     <label>Fecha de solicitud del servicio:</label>
-                    <input type="date" name="fecha_solicitud" class="form-control">
+                    <input type="date" name="fecha_solicitud" class="form-control" >
                 </div>
             </div>
-
             <div class="row mt-3">
                 <div class="col-md-6">
-                    <label>Subir Sello de Recepción (imagen o PDF):</label>
+                    <label>Sello de Recepción (imagen o PDF):</label>
                     <input type="file" name="sello_archivo" class="form-control" accept=".jpg,.jpeg,.png,.pdf">
                 </div>
                 <div class="col-md-6">
                     <label>Fecha de recepción:</label>
-                    <input type="date" name="fecha_recepcion" class="form-control">
+                    <input type="date" name="fecha_recepcion" class="form-control" >
                 </div>
             </div>
         </div>
-
+        <!-- Sección 4: Diagnóstico y prioridad -->
         <div class="form-section">
+            <h4><i class="bi bi-search section-icon"></i> Diagnóstico y Prioridad</h4>
             <label>Diagnóstico Técnico:</label>
-            <textarea name="diagnostico" class="form-control" rows="3"></textarea>
-
+            <textarea name="diagnostico" class="form-control" rows="3" required></textarea>
             <label class="mt-3">Prioridad:</label>
-            <div class="checkbox-group">
+            <div class="radio-group">
                 <div class="form-check">
-                    <input type="radio" name="prioridad" value="muy_urgente" class="form-check-input">
+                    <input type="radio" name="prioridad" value="muy_urgente" class="form-check-input" >
                     <label class="form-check-label">Muy urgente</label>
                 </div>
                 <div class="form-check">
@@ -161,17 +156,14 @@
                     <label class="form-check-label">Programar</label>
                 </div>
             </div>
-
             <div class="mt-3">
                 <label>Encargado de mantenimiento:</label>
-                <input type="text" name="encargado" class="form-control">
+                <input type="text" name="encargado" class="form-control" >
             </div>
-
             <div class="mt-3">
-                <label>Fecha:</label>
-                <input type="date" name="fecha_mantenimiento" class="form-control">
+                <label>Fecha de mantenimiento:</label>
+                <input type="date" name="fecha_mantenimiento" class="form-control" >
             </div>
-
             <label class="mt-3">Modalidad de atención:</label>
             <div class="checkbox-group">
                 <div class="form-check">
@@ -184,33 +176,27 @@
                 </div>
             </div>
         </div>
-
-        <div class="form-section">
-            <label>Descripción del trabajo de mantenimiento ejecutado:</label>
-            <textarea name="trabajo" class="form-control" rows="5"></textarea>
-
-            <label class="mt-3">Fecha de inicio:</label>
-            <input type="date" name="fecha_inicio" class="form-control">
-
-            <label class="mt-3">Fecha de término:</label>
-            <input type="date" name="fecha_termino" class="form-control">
-
-            <label class="mt-3">Garantía del servicio:</label>
-            <input type="text" name="garantia" class="form-control">
-
-            <label class="mt-3">Costo del servicio:</label>
-            <input type="text" name="costo" class="form-control">
-
-            <label class="mt-3">Recomendaciones de uso y mantenimiento:</label>
-            <textarea name="recomendaciones" class="form-control" rows="3"></textarea>
+        <!-- Sección 5: Trabajo realizado -->
+        <!-- Ejemplo para la sección "Trabajo realizado" con campos opcionales -->
+<div class="form-section">
+    <h4><i class="bi bi-tools section-icon"></i> Trabajo Realizado</h4>
+    <label>Descripción del trabajo de mantenimiento ejecutado:</label>
+    <textarea name="trabajo" class="form-control" rows="5"></textarea>
+    <label class="mt-3">Fecha de inicio:</label>
+    <input type="date" name="fecha_inicio" class="form-control">
+    <label class="mt-3">Fecha de término:</label>
+    <input type="date" name="fecha_termino" class="form-control">
+    <label class="mt-3">Garantía del servicio:</label>
+    <input type="text" name="garantia" class="form-control">
+    <label class="mt-3">Costo del servicio:</label>
+    <input type="text" name="costo" class="form-control">
+    <label class="mt-3">Recomendaciones de uso y mantenimiento:</label>
+    <textarea name="recomendaciones" class="form-control" rows="3"></textarea>
+</div>
         </div>
-
         <div class="text-center">
             <input type="submit" value="Siguiente ▶️" class="btn btn-success btn-custom">
         </div>
     </form>
-
-  
-
 </body>
 </html>
