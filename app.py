@@ -4,7 +4,7 @@
 #el temrinal eses http://127.0.0.1:5000/login
 
 
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session,send_file
 
 app = Flask(__name__)
 app.secret_key = 'supersecreto'  # Necesario para sesiones
@@ -102,27 +102,22 @@ def logout():
 
 
 
-#para descargar el excel se instala en su temrinal -> pip install pandas openpyxl  
 
 
+#para descargar el excel se instala en su temrinal -> pip install pandas openpyxl
+from Download import generar_excel_otm
 import pandas as pd
-from flask import send_file
-import io
-
-
-
 @app.route('/descargar_excel')
 def descargar_excel():
-    if not otm_data:
-        return "No hay datos para descargar.", 400
-    df = pd.DataFrame(otm_data)
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine='openpyxl') as writer:
-        df.to_excel(writer, index=False, sheet_name='OTMs')
-    output.seek(0)
-    return send_file(output, download_name="OTMs.xlsx", as_attachment=True)
-
-
+    output, error, status = generar_excel_otm(otm_data)
+    if status != 200:
+        return error, status
+    return send_file(
+        output,
+        download_name=f'OTM-{pd.Timestamp.now().strftime("%Y%m%d_%H%M%S")}.xlsx',
+        as_attachment=True,
+        mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
 
 if __name__ == '__main__':
     app.run(debug=True)
