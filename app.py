@@ -19,7 +19,10 @@ otm_data = []      # Lista de OTMs completas
 
 @app.route('/')
 def inicio():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
     return redirect(url_for('formulario'))
+
 
 @app.route('/formulario', methods=['GET', 'POST'])
 def formulario():
