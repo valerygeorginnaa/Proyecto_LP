@@ -94,7 +94,7 @@ def login():
         # Usuario y contraseña de ejemplo
         if username == 'admin' and password == '1234':
             session['usuario'] = username
-            return redirect(url_for('resumen'))
+            return redirect(url_for('formulario'))
         else:
             error = 'Usuario o contraseña incorrectos'
     return render_template('login.html', error=error)
