@@ -19,9 +19,26 @@ otm_data = []      # Lista de OTMs completas
 
 @app.route('/')
 def inicio():
-    if 'usuario' not in session:
-        return redirect(url_for('login'))
-    return redirect(url_for('formulario'))
+    return redirect(url_for('login'))
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Verificamos credenciales
+        if username == 'admin' and password == '123456':
+            session['usuario'] = username
+            return redirect(url_for('formulario'))  # Ruta del ingeniero o tecnico biomedico
+        elif username == 'secretaria' and password == '123456':
+            session['usuario'] = username
+            return redirect(url_for('dashboardSecretaria'))  # Ruta de secretaria (area de ingenieria clinica)
+        else:
+            error = 'Usuario o contraseña incorrectos'
+    
+    return render_template('login.html', error=error)
 
 
 @app.route('/formulario', methods=['GET', 'POST'])
@@ -83,27 +100,8 @@ def resumen():
     return render_template('resumen.html', otms=otm_data)
 
 
-# ...login usuarioy contraseña
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        # Verificamos credenciales
-        if username == 'admin' and password == '123456':
-            session['usuario'] = username
-            return redirect(url_for('formulario'))  # Ruta del ingeniero o tecnico biomedico
-        elif username == 'secretaria' and password == '123456':
-            session['usuario'] = username
-            return redirect(url_for('dashboardSecretaria'))  # Ruta de secretaria (area de ingenieria clinica)
-        else:
-            error = 'Usuario o contraseña incorrectos'
-    
-    return render_template('login.html', error=error)
+
 
     
 
