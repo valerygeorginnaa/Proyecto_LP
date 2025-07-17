@@ -99,6 +99,9 @@ def resumen():
         return redirect(url_for('login'))
     return render_template('resumen.html', otms=otm_data)
 
+@app.route('/dashboard_secretaria')
+def dashboard_secretaria():
+    return render_template('dashboardSecretaria.html', otms=otm_data)
 
 
 
