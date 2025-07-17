@@ -167,3 +167,9 @@ def descargar_pdf(index):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/dashboardSecretaria')
+def dashboardSecretaria():
+    if 'usuario' not in session or session['usuario'] != 'secretaria':
+        return redirect(url_for('login'))
+    return render_template('dashboardSecretaria.html', otms=otm_data)
