@@ -88,16 +88,24 @@ def resumen():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        # Usuario y contraseña de ejemplo
-        if username == 'admin' and password == '1234':
+        
+        # Verificamos credenciales
+        if username == 'admin' and password == '123456':
             session['usuario'] = username
-            return redirect(url_for('formulario'))
+            return redirect(url_for('formulario'))  # Ruta del ingeniero o tecnico biomedico
+        elif username == 'secretaria' and password == '123456':
+            session['usuario'] = username
+            return redirect(url_for('dashboardSecretaria'))  # Ruta de secretaria (area de ingenieria clinica)
         else:
             error = 'Usuario o contraseña incorrectos'
+    
     return render_template('login.html', error=error)
+
+    
 
 
 @app.route('/logout')
