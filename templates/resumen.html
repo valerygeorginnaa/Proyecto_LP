@@ -93,17 +93,25 @@
                     </thead>
                     <tbody>
                         {% for otm in otms %}
-                            <tr>
-                                {% for value in otm.values() %}
-                                    <td>{{ value }}</td>
-                                {% endfor %}
-                                <td>
-                                    <a href="{{ url_for('descargar_pdf', index=loop.index0) }}" class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-filetype-pdf"></i> PDF
-                                    </a>
-                                </td>
-                            </tr>
-                        {% endfor %}
+<tr>
+    {% for value in otm.values() %}
+        <td>{{ value }}</td>
+    {% endfor %}
+    <td>
+        <a href="{{ url_for('descargar_pdf', index=loop.index0) }}" class="btn btn-sm btn-outline-danger">
+            <i class="bi bi-filetype-pdf"></i> PDF
+        </a>
+        <a href="{{ url_for('editar_otm', index=loop.index0) }}" class="btn btn-sm btn-outline-warning my-3">
+            <i class="bi bi-pencil-square"></i> Editar
+        </a>
+        <form action="{{ url_for('eliminar_otm', index=loop.index0) }}" method="post" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-outline-secondary" onclick="return confirm('¿Eliminar esta OTM?');">
+                <i class="bi bi-trash"></i> Eliminar
+            </button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -117,6 +125,8 @@
         <div class="footer">
             <span><i class="bi bi-hospital"></i> Sistema de Automatización Biomédica</span>
         </div>
+
+
     </div>
 </body>
 </html>

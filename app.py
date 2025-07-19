@@ -217,6 +217,26 @@ def dashboardSecretaria():
 
     return render_template("dashboardSecretaria.html", otms=filtradas)
 
+
+
+
+# CRUD RESUMEN.HTML
+@app.route('/eliminar_otm/<int:index>', methods=['POST'])
+def eliminar_otm(index):
+    if 0 <= index < len(otm_data_completo):
+        otm_data_completo.pop(index)
+    return redirect(url_for('resumen'))
+
+@app.route('/editar_otm/<int:index>', methods=['GET', 'POST'])
+def editar_otm(index):
+    if 0 <= index < len(otm_data_completo):
+        if request.method == 'POST':
+            for key in otm_data_completo[index]:
+                otm_data_completo[index][key] = request.form.get(key, otm_data_completo[index][key])
+            return redirect(url_for('resumen'))
+        return render_template('editar_otm.html', otm=otm_data_completo[index], index=index)
+    return redirect(url_for('resumen'))
+
 if __name__ == '__main__':
     app.run(debug=True)
 
