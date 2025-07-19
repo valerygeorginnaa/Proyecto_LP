@@ -13,7 +13,28 @@ app.secret_key = 'supersecreto'  # Necesario para sesiones
 
 # Variables globales para almacenar datos de OTM
 otm_parcial = {}   # Guarda temporalmente los datos del Formulario 1
-otm_data = []      # Lista de OTMs completas
+otm_data = [
+    {"numero": "OTM001", "fecha": "2024-06-01", "estado": "Por Archivar"},
+    {"numero": "OTM002", "fecha": "2024-06-03", "estado": "Archivado"},
+    {"numero": "OTM003", "fecha": "2024-06-05", "estado": "Por Archivar"},
+    {"numero": "OTM004", "fecha": "2024-06-07", "estado": "Archivado"},
+    {"numero": "OTM005", "fecha": "2024-06-09", "estado": "Por Archivar"},
+    {"numero": "OTM006", "fecha": "2024-06-11", "estado": "Archivado"},
+    {"numero": "OTM007", "fecha": "2024-06-13", "estado": "Por Archivar"},
+    {"numero": "OTM008", "fecha": "2024-06-15", "estado": "Archivado"},
+    {"numero": "OTM009", "fecha": "2024-06-17", "estado": "Por Archivar"},
+    {"numero": "OTM010", "fecha": "2024-06-19", "estado": "Archivado"},
+    {"numero": "OTM011", "fecha": "2024-06-21", "estado": "Por Archivar"},
+    {"numero": "OTM012", "fecha": "2024-06-23", "estado": "Archivado"},
+    {"numero": "OTM013", "fecha": "2024-06-25", "estado": "Por Archivar"},
+    {"numero": "OTM014", "fecha": "2024-06-27", "estado": "Archivado"},
+    {"numero": "OTM015", "fecha": "2024-06-29", "estado": "Por Archivar"},
+    {"numero": "OTM016", "fecha": "2024-07-01", "estado": "Archivado"},
+    {"numero": "OTM017", "fecha": "2024-07-03", "estado": "Por Archivar"},
+    {"numero": "OTM018", "fecha": "2024-07-05", "estado": "Archivado"},
+    {"numero": "OTM019", "fecha": "2024-07-07", "estado": "Por Archivar"},
+    {"numero": "OTM020", "fecha": "2024-07-09", "estado": "Archivado"},
+]      # Lista de OTMs completas
 
 @app.route('/')
 def inicio():
@@ -97,9 +118,7 @@ def resumen():
         return redirect(url_for('login'))
     return render_template('resumen.html', otms=otm_data)
 
-@app.route('/dashboard_secretaria')
-def dashboard_secretaria():
-    return render_template('dashboardSecretaria.html', otms=otm_data)
+
 
 
 
@@ -163,37 +182,37 @@ def descargar_pdf(index):
 
     return "OTM no encontrada", 404
 
-from datetime import datetime
-
-@app.route('/dashboardSecretaria', methods=['GET', 'POST'])
+@app.route("/dashboardSecretaria", methods=["GET", "POST"])
 def dashboardSecretaria():
-    if 'usuario' not in session or session['usuario'] != 'secretaria':
-        return redirect(url_for('login'))
+    filtradas = otm_data  # Por defecto se muestran todas
 
-    otms_filtradas = otm_data  # Esta es tu lista original de OTMs
+    if request.method == "POST":
+        desde = request.form.get("fecha_inicio")
+        hasta = request.form.get("fecha_fin")
+        estado = request.form.get("estado")
+        numero = request.form.get("codigo")
 
-    if request.method == 'POST':
-        fecha_inicio = request.form.get('fecha_inicio')
-        fecha_fin = request.form.get('fecha_fin')
-        estado = request.form.get('estado')
 
-        # Filtrar por fechas
-        if fecha_inicio and fecha_fin:
-            try:
-                inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d')
-                fin = datetime.strptime(fecha_fin, '%Y-%m-%d')
-                otms_filtradas = [
-                    otm for otm in otms_filtradas
-                    if 'fecha' in otm and datetime.strptime(otm['fecha'], '%Y-%m-%d') >= inicio and datetime.strptime(otm['fecha'], '%Y-%m-%d') <= fin
-                ]
-            except ValueError:
-                pass  # Si hay error en las fechas, ignora el filtro
+        def cumple(otm):
+            cumple_fecha = True
+            cumple_estado = True
+            cumple_numero = True
 
-        # Filtrar por estado
-        if estado and estado != 'Todos':
-            otms_filtradas = [otm for otm in otms_filtradas if otm.get('estado') == estado]
+            if desde:
+                cumple_fecha = datetime.strptime(otm["fecha"], "%Y-%m-%d") >= datetime.strptime(desde, "%Y-%m-%d")
+            if hasta:
+                cumple_fecha = cumple_fecha and datetime.strptime(otm["fecha"], "%Y-%m-%d") <= datetime.strptime(hasta, "%Y-%m-%d")
+            if estado:
+                cumple_estado = otm["estado"].lower() == estado.lower()
 
-    return render_template('dashboardSecretaria.html', otms=otms_filtradas)
+            if numero:
+                cumple_numero = numero.lower() in otm["numero"].lower()
+
+            return cumple_fecha and cumple_estado and cumple_numero
+
+        filtradas = [otm for otm in otm_data if cumple(otm)]
+
+    return render_template("dashboardSecretaria.html", otms=filtradas)
 
 if __name__ == '__main__':
     app.run(debug=True)
