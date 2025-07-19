@@ -7,11 +7,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session,send_file
 from reportlab.pdfgen import canvas
 from io import BytesIO
-
+from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'supersecreto'  # Necesario para sesiones
-
-
 
 # Variables globales para almacenar datos de OTM
 otm_parcial = {}   # Guarda temporalmente los datos del Formulario 1
@@ -165,11 +163,37 @@ def descargar_pdf(index):
 
     return "OTM no encontrada", 404
 
-@app.route('/dashboardSecretaria')
+from datetime import datetime
+
+@app.route('/dashboardSecretaria', methods=['GET', 'POST'])
 def dashboardSecretaria():
     if 'usuario' not in session or session['usuario'] != 'secretaria':
         return redirect(url_for('login'))
-    return render_template('dashboardSecretaria.html', otms=otm_data)
+
+    otms_filtradas = otm_data  # Esta es tu lista original de OTMs
+
+    if request.method == 'POST':
+        fecha_inicio = request.form.get('fecha_inicio')
+        fecha_fin = request.form.get('fecha_fin')
+        estado = request.form.get('estado')
+
+        # Filtrar por fechas
+        if fecha_inicio and fecha_fin:
+            try:
+                inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d')
+                fin = datetime.strptime(fecha_fin, '%Y-%m-%d')
+                otms_filtradas = [
+                    otm for otm in otms_filtradas
+                    if 'fecha' in otm and datetime.strptime(otm['fecha'], '%Y-%m-%d') >= inicio and datetime.strptime(otm['fecha'], '%Y-%m-%d') <= fin
+                ]
+            except ValueError:
+                pass  # Si hay error en las fechas, ignora el filtro
+
+        # Filtrar por estado
+        if estado and estado != 'Todos':
+            otms_filtradas = [otm for otm in otms_filtradas if otm.get('estado') == estado]
+
+    return render_template('dashboardSecretaria.html', otms=otms_filtradas)
 
 if __name__ == '__main__':
     app.run(debug=True)
