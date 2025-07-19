@@ -34,7 +34,8 @@ otm_data = [
     {"numero": "OTM018", "fecha": "2024-07-05", "estado": "Archivado"},
     {"numero": "OTM019", "fecha": "2024-07-07", "estado": "Por Archivar"},
     {"numero": "OTM020", "fecha": "2024-07-09", "estado": "Archivado"},
-]      # Lista de OTMs completas
+]  
+otm_data_completo= []   # Lista de OTMs completas
 
 @app.route('/')
 def inicio():
@@ -87,7 +88,7 @@ def formulario():
 
 @app.route('/formulario2', methods=['GET', 'POST'])
 def formulario2():
-    global otm_parcial, otm_data
+    global otm_parcial, otm_data_completa
 
     if request.method == 'POST':
         datos_form2 = {}
@@ -103,7 +104,8 @@ def formulario2():
 
         # Fusionar los datos del formulario 1 y 2
         otm_completa = {**otm_parcial, **datos_form2}
-        otm_data.append(otm_completa)
+        otm_data_completo.append(otm_completa)
+
 
         # Limpiar datos parciales
         otm_parcial = {}
@@ -116,7 +118,8 @@ def formulario2():
 def resumen():
     if 'usuario' not in session:
         return redirect(url_for('login'))
-    return render_template('resumen.html', otms=otm_data)
+    return render_template('resumen.html', otms=otm_data_completo)
+
 
 
 
@@ -140,7 +143,7 @@ from Download import generar_excel_otm
 import pandas as pd
 @app.route('/descargar_excel')
 def descargar_excel():
-    output, error, status = generar_excel_otm(otm_data)
+    output, error, status = generar_excel_otm(otm_data_completo)
     if status != 200:
         return error, status
     return send_file(
@@ -153,8 +156,8 @@ def descargar_excel():
 # -> pip install reportlab 
 @app.route('/descargar_pdf/<int:index>')
 def descargar_pdf(index):
-    if 0 <= index < len(otm_data):
-        otm = otm_data[index]
+    if 0 <= index < len(otm_data_completo):
+        otm = otm_data_completo[index]
 
         # Crear un PDF en memoria
         buffer = BytesIO()
