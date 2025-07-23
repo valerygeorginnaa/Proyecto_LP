@@ -2,7 +2,7 @@
 
 otm_detalle_data = [
     {
-        "numero": "OTM-001",
+        "numero": "OTM001",
         "fecha": "2025-07-20",
         "servicio": "Cardiología",
         "equipo": "Electrocardiógrafo",
@@ -24,7 +24,7 @@ otm_detalle_data = [
         "mano_obra": "150.00"
     },
     {
-        "numero": "OTM-002",
+        "numero": "OTM002",
         "fecha": "2025-07-18",
         "servicio": "Emergencia",
         "equipo": "Monitor de signos vitales",
@@ -46,7 +46,7 @@ otm_detalle_data = [
         "mano_obra": "200.00"
     },
     {
-        "numero": "OTM-003",
+        "numero": "OTM003",
         "fecha": "2025-07-19",
         "servicio": "Pediatría",
         "equipo": "Incubadora",
@@ -68,7 +68,7 @@ otm_detalle_data = [
         "mano_obra": "250.00"
     },
     {
-        "numero": "OTM-004",
+        "numero": "OTM004",
         "fecha": "2025-07-15",
         "servicio": "Laboratorio",
         "equipo": "Centrífuga",
@@ -90,7 +90,7 @@ otm_detalle_data = [
         "mano_obra": "120.00"
     },
     {
-        "numero": "OTM-005",
+        "numero": "OTM005",
         "fecha": "2025-07-12",
         "servicio": "Rayos X",
         "equipo": "Reveladora de placas",

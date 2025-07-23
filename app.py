@@ -201,12 +201,7 @@ def dashboardSecretaria():
 
     return render_template("dashboardSecretaria.html", otms=filtradas)
 
-@app.route('/ver_detalle/<numero>', methods=['GET'])
-def ver_detalle(numero):
-    for otm in otm_data_completo:
-        if otm['numero'] == numero:
-            return render_template('verDetalle.html', otm=otm)
-    return "OTM no encontrada", 404
+
 
 @app.route('/archivar_otm/<numero>', methods=['POST'])
 def archivar_otm(numero):
@@ -217,14 +212,13 @@ def archivar_otm(numero):
 
 @app.route('/ver_detalle/<numero>')
 def ver_detalle(numero):
-    # Busca la OTM en otm_detalle_data
     detalle_otm = next((otm for otm in otm_detalle_data if otm["numero"] == numero), None)
 
     if not detalle_otm:
         return "OTM no encontrada", 404
 
-    # Renderiza la plantilla con los datos de la OTM
     return render_template('verDetalle.html', otm=detalle_otm)
+
 
 
 
