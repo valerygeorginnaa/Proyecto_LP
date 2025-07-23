@@ -70,6 +70,20 @@
         <div class="info-box">
             <p><strong>Estado Actual:</strong> {{ otm.estado }}</p>
         </div>
+        <!-- Firma y sello -->
+        <div class="row mt-5">
+            <div class="col text-center">
+                <p>______________________________</p>
+                <p>Responsable de ejecución</p>
+                <img src="{{ url_for('static', filename='firmas/firma_licfernandez.png') }}" alt="Firma" style="height: 60px;"><br>
+                <img src="{{ url_for('static', filename='sellos/sello_licfernandez.png') }}" alt="Sello" style="height: 70px;">
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('dashboardSecretaria') }}" class="btn btn-secondary">⬅ Volver al Panel</a>
+        </div>
+    </div> <!-- cierre del .container -->
 
         <div class="text-center mt-4">
             <a href="{{ url_for('dashboardSecretaria') }}" class="btn btn-secondary">⬅ Volver al Panel</a>
