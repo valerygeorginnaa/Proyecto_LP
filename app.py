@@ -3,7 +3,7 @@
 #leugo lo ejecutas 
 #el temrinal eses http://127.0.0.1:5000/login
 
-
+from datos_otm_detalle import otm_detalle_data
 from flask import Flask, render_template, request, redirect, url_for, session,send_file
 from reportlab.pdfgen import canvas
 from io import BytesIO
@@ -215,6 +215,16 @@ def archivar_otm(numero):
             otm["estado"] = "Archivado"  # ✅ Aquí se cambia el estado
     return redirect(url_for('dashboardSecretaria'))
 
+@app.route('/ver_detalle/<numero>')
+def ver_detalle(numero):
+    # Busca la OTM en otm_detalle_data
+    detalle_otm = next((otm for otm in otm_detalle_data if otm["numero"] == numero), None)
+
+    if not detalle_otm:
+        return "OTM no encontrada", 404
+
+    # Renderiza la plantilla con los datos de la OTM
+    return render_template('verDetalle.html', otm=detalle_otm)
 
 
 
