@@ -77,7 +77,16 @@
             <a href="{{ url_for('descargar_excel') }}" class="btn btn-primary">
                 <i class="bi bi-file-earmark-excel"></i> Descargar Excel
             </a>
-            
+             <a href="{{ url_for('logout') }}" style="
+    background-color: #dc3545;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  ">🔓 Cerrar Sesión</a>
         </div>
 
         {% if otms %}
