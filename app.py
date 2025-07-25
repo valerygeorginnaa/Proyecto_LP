@@ -2,7 +2,7 @@
 #primero se descarga el  flask , si no lo tienes usa esto en tu temrinal -> pip install flask
 #leugo lo ejecutas 
 #el temrinal eses http://127.0.0.1:5000/login
-
+from usuariosdelsistema import licenciadas, tecnicosingenieros, secretarias
 from datos_otm_detalle import otm_detalle_data
 from flask import Flask, render_template, request, redirect, url_for, session,send_file
 from reportlab.pdfgen import canvas
@@ -44,22 +44,33 @@ def inicio():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        
-        # Verificamos credenciales
-        if username == 'admin' and password == '123456':
-            session['usuario'] = username
-            return redirect(url_for('formulario'))  # Ruta del ingeniero o tecnico biomedico
-        elif username == 'secretaria' and password == '123456':
-            session['usuario'] = username
-            return redirect(url_for('dashboardSecretaria'))  # Ruta de secretaria (area de ingenieria clinica)
-        else:
-            error = 'Usuario o contraseña incorrectos'
-    
+
+        # Buscar en técnicos
+        for user in tecnicosingenieros:
+            if user['username'] == username and user['password'] == password:
+                session['usuario'] = username
+                return redirect(url_for('formulario'))  # Ruta para técnico
+
+        # Buscar en licenciadas
+        for user in licenciadas:
+            if user['username'] == username and user['password'] == password:
+                session['usuario'] = username
+                return redirect(url_for('dashboardLicenciada'))  # Ruta para licenciada
+
+        # Buscar en secretarias
+        for user in secretarias:
+            if user['username'] == username and user['password'] == password:
+                session['usuario'] = username
+                return redirect(url_for('dashboardSecretaria'))  # Ruta para secretaria
+
+        error = 'Usuario o contraseña incorrectos'
+
     return render_template('login.html', error=error)
+
 
 
 @app.route('/formulario', methods=['GET', 'POST'])
