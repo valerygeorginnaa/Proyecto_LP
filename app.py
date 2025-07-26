@@ -239,9 +239,9 @@ def ver_detalle(numero):
 
 @app.route("/dashboardLicenciada", methods=["GET", "POST"])
 def dashboardLicenciada():
-    session['rol'] = 'licenciada'  # ← Aquí también
+    session['rol'] = 'licenciada'
 
-    filtradas = otm_data
+    filtradas = otm_detalle_data  # ← CAMBIA otm_data por otm_detalle_data
 
     if request.method == "POST":
         estado = request.form.get("estado")
@@ -256,10 +256,9 @@ def dashboardLicenciada():
                 cumple_numero = numero.lower() in otm["numero"].lower()
             return cumple_estado and cumple_numero
 
-        filtradas = [otm for otm in otm_data if cumple(otm)]
+        filtradas = [otm for otm in otm_detalle_data if cumple(otm)]
 
-    return render_template("dashboardLicenciada.html", otms=otm_detalle_data)
-
+    return render_template("dashboardLicenciada.html", otms=filtradas)
 
 @app.route('/firmar_otm/<numero>', methods=['POST'])
 def firmar_otm(numero):
