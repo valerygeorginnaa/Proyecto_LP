@@ -25,9 +25,30 @@ app.secret_key = 'supersecreto'  # Clave para sesiones
 otm_parcial = {}   # Guarda temporalmente los datos del Formulario 1
 otm_data = [
     # Lista de OTMs de ejemplo (puedes cargar desde archivo o base de datos)
+   
     {"numero": "OTM001", "fecha": "2024-06-01", "estado": "Por Archivar"},
-    # ... (más OTMs)
+    {"numero": "OTM002", "fecha": "2024-06-02", "estado": "Archivado"},
+    {"numero": "OTM003", "fecha": "2024-06-03", "estado": "Por Archivar"},
+    {"numero": "OTM004", "fecha": "2024-06-04", "estado": "Archivado"},
+    {"numero": "OTM005", "fecha": "2024-06-05", "estado": "Por Archivar"},
+    {"numero": "OTM006", "fecha": "2024-06-06", "estado": "Archivado"},
+    {"numero": "OTM007", "fecha": "2024-06-07", "estado": "Por Archivar"},
+    {"numero": "OTM008", "fecha": "2024-06-08", "estado": "Archivado"},
+    {"numero": "OTM009", "fecha": "2024-06-09", "estado": "Por Archivar"},
+    {"numero": "OTM010", "fecha": "2024-06-10", "estado": "Archivado"},
+    {"numero": "OTM011", "fecha": "2024-06-11", "estado": "Por Archivar"},
+    {"numero": "OTM012", "fecha": "2024-06-12", "estado": "Archivado"},
+    {"numero": "OTM013", "fecha": "2024-06-13", "estado": "Por Archivar"},
+    {"numero": "OTM014", "fecha": "2024-06-14", "estado": "Archivado"},
+    {"numero": "OTM015", "fecha": "2024-06-15", "estado": "Por Archivar"},
+    {"numero": "OTM016", "fecha": "2024-06-16", "estado": "Archivado"},
+    {"numero": "OTM017", "fecha": "2024-06-17", "estado": "Por Archivar"},
+    {"numero": "OTM018", "fecha": "2024-06-18", "estado": "Archivado"},
+    {"numero": "OTM019", "fecha": "2024-06-19", "estado": "Por Archivar"},
+    {"numero": "OTM020", "fecha": "2024-06-20", "estado": "Archivado"},
 ]
+
+
 otm_data_completo = []   # Lista de OTMs completas
 
 # ---- FUNCIONES PARA USUARIOS REGISTRADOS (JSON) ----
