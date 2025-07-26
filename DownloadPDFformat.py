@@ -1,3 +1,8 @@
+# ==========================================
+#  GENERACIÓN DE PDF PARA OTM - SISTEMA BIOMÉDICO
+#  Utiliza reportlab para crear PDFs con los datos de la OTM
+# ==========================================
+
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
@@ -5,6 +10,16 @@ from reportlab.lib.units import cm
 from io import BytesIO
 
 def draw_labeled_box(c, x, y, label, text, width=8*cm, height=1*cm):
+    """
+    Dibuja una caja con borde, etiqueta y valor en el PDF.
+    :param c: Canvas de reportlab
+    :param x: Posición X inicial
+    :param y: Posición Y inicial
+    :param label: Etiqueta del campo
+    :param text: Valor del campo
+    :param width: Ancho de la caja
+    :param height: Alto de la caja
+    """
     c.setStrokeColor(colors.black)
     c.rect(x, y - height, width, height, fill=0)
     c.setFont("Helvetica-Bold", 8)
@@ -13,6 +28,11 @@ def draw_labeled_box(c, x, y, label, text, width=8*cm, height=1*cm):
     c.drawString(x + 2, y - 22, str(text))
 
 def generar_pdf_otm_completo_formato(otm):
+    """
+    Genera un PDF con el formato completo de una OTM (dos páginas).
+    :param otm: Diccionario con los datos de la OTM
+    :return: Buffer BytesIO listo para enviar como archivo PDF
+    """
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
     width, height = A4
@@ -21,6 +41,7 @@ def generar_pdf_otm_completo_formato(otm):
     c.setFont("Helvetica-Bold", 12)
     c.drawCentredString(width / 2, height - 40, "ORDEN DE TRABAJO DE MANTENIMIENTO")
 
+    # Lista de campos a mostrar en la primera página
     campos_form1 = [
         ('Área Usuaria', 'area'), ('Dependencia', 'dependencia'),
         ('Número de OTM', 'numero'), ('Fecha', 'fecha'),
@@ -39,22 +60,25 @@ def generar_pdf_otm_completo_formato(otm):
         ('Prioridad', 'prioridad'), ('Modalidad', 'modalidad'),
     ]
 
+    # Posición inicial para los campos
     x = 2 * cm
     y = height - 60
     for label, key in campos_form1:
         value = otm.get(key, '')
         draw_labeled_box(c, x, y, label, value)
         y -= 1.5 * cm
+        # Si se acaba el espacio vertical, pasa a la siguiente columna
         if y < 4 * cm:
             x += 9 * cm
             y = height - 60
 
-    c.showPage()
+    c.showPage()  # Nueva página
 
     # -------- Página 2 - Formulario 2 --------
     c.setFont("Helvetica-Bold", 12)
     c.drawCentredString(width / 2, height - 40, "DETALLE DE COSTOS")
 
+    # Lista de campos a mostrar en la segunda página
     campos_form2 = [
         ('Técnico Responsable', 'nombre_tecnico'), ('Especialidad', 'especialidad'),
         ('Horas Hombre', 'horas'), ('Valor por Hora', 'valor_hora'),
@@ -66,6 +90,7 @@ def generar_pdf_otm_completo_formato(otm):
         ('Impuestos', 'impuestos'), ('Total General', 'total_general')
     ]
 
+    # Posición inicial para los campos de la segunda página
     x = 2 * cm
     y = height - 60
     for label, key in campos_form2:

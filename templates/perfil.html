@@ -3,15 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Perfil de Usuario</title>
+  <!-- Bootstrap para estilos y Bootstrap Icons para íconos -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/x-icon">
   <style>
+    /* Fondo con gradiente suave */
     body {
       background: linear-gradient(135deg, #f8f9fa 0%, #e3eefd 100%);
       min-height: 100vh;
     }
-
+    /* Caja principal del perfil */
     .profile-box {
       background: white;
       padding: 40px;
@@ -21,7 +23,7 @@
       margin: 60px auto;
       text-align: center;
     }
-
+    /* Imagen de perfil (no usada, pero lista para futuro) */
     .profile-img {
       width: 140px;
       height: 140px;
@@ -30,23 +32,23 @@
       border: 4px solid #ddd;
       margin-bottom: 20px;
     }
-
+    /* Nombre grande y destacado */
     .profile-name {
       font-size: 24px;
       font-weight: bold;
       margin-bottom: 8px;
       color: #004080;
     }
-
+    /* Nombre de usuario en gris */
     .profile-username {
       color: #666;
       margin-bottom: 20px;
     }
-
+    /* Alineación de los datos en la lista */
     .list-group-item {
       text-align: left;
     }
-
+    /* Espacio para el botón de volver */
     .btn-volver {
       margin-top: 25px;
     }
@@ -58,31 +60,36 @@
     <!-- Ícono de usuario Bootstrap centrado -->
     <i class="bi bi-person-circle" style="font-size: 100px; color: #0d6efd; margin-bottom: 20px;"></i>
 
+    <!-- Nombre y usuario -->
     <div class="profile-name">{{ usuario.nombre }}</div>
     <div class="profile-username">@{{ usuario.username }}</div>
 
+    <!-- Lista de datos del usuario -->
     <ul class="list-group text-start mt-4">
       <li class="list-group-item"><strong>Usuario:</strong> {{ usuario.username }}</li>
       <li class="list-group-item"><strong>Nombre completo:</strong> {{ usuario.nombre }}</li>
       <li class="list-group-item"><strong>Contraseña:</strong> {{ usuario.password }}</li>
-      <li class="list-group-item"><strong>Número:</strong> {{ usuario.profesion }}</li>
+      <li class="list-group-item"><strong>Profesión:</strong> {{ usuario.profesion }}</li>
       <li class="list-group-item"><strong>Correo:</strong> {{ usuario.correo }}</li>
-       
     </ul>
 
-   {% if usuario.rol == 'SEC' %}
-    <a href="{{ url_for('dashboardSecretaria') }}" class="btn btn-secondary btn-volver">
-        <i class="bi bi-arrow-left"></i> Volver al Panel de Secretaría
-    </a>
-{% elif usuario.rol == 'ING' %}
-    <a href="{{ url_for('resumen') }}" class="btn btn-secondary btn-volver">
-        <i class="bi bi-arrow-left"></i> Volver al Resumen
-    </a>
-{% elif usuario.rol == 'LIC' %}
-    <a href="{{ url_for('dashboardLicenciada') }}" class="btn btn-secondary btn-volver">
-        <i class="bi bi-arrow-left"></i> Volver al Panel de Licenciada
-    </a>
-{% endif %}
+    <!-- Botón de volver según el rol del usuario -->
+    {% if usuario.rol == 'SEC' %}
+      <!-- Vuelve al panel de Secretaría -->
+      <a href="{{ url_for('dashboardSecretaria') }}" class="btn btn-secondary btn-volver">
+          <i class="bi bi-arrow-left"></i> Volver al Panel de Secretaría
+      </a>
+    {% elif usuario.rol == 'ING' %}
+      <!-- Vuelve al panel de Ingeniero/Técnico -->
+      <a href="{{ url_for('resumen') }}" class="btn btn-secondary btn-volver">
+          <i class="bi bi-arrow-left"></i> Volver al Resumen
+      </a>
+    {% elif usuario.rol == 'LIC' %}
+      <!-- Vuelve al panel de Licenciada -->
+      <a href="{{ url_for('dashboardLicenciada') }}" class="btn btn-secondary btn-volver">
+          <i class="bi bi-arrow-left"></i> Volver al Panel de Licenciada
+      </a>
+    {% endif %}
     
   </div>
 
