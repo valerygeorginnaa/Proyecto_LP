@@ -1,0 +1,18 @@
+[
+  {
+    "username": "lunafea",
+    "password": "123456",
+    "nombre": "luna romero",
+    "profesion": "Técnico/Ingeniero",
+    "correo": "adrenali.ariadra@gmail.com",
+    "rol": "ING"
+  },
+  {
+    "username": "secAnhai",
+    "password": "123456",
+    "nombre": "anahi",
+    "profesion": "Secretaria",
+    "correo": "U22212121@utp.edu.pe",
+    "rol": "SEC"
+  }
+]

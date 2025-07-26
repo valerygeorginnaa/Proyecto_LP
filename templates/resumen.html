@@ -67,6 +67,76 @@
     </style>
 </head>
 <body>
+    
+<!-- Ícono flotante -->
+<div id="perfil-icono" onclick="togglePerfilPanel()" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #fff;
+    font-size: 28px;
+">
+    <i class="bi bi-person-circle"></i>
+</div>
+
+<!-- Panel lateral profesional -->
+<div id="perfil-panel" style="
+    position: fixed;
+    top: 0;
+    right: -340px;
+    width: 340px;
+    height: 100%;
+    background: rgba(255,255,255,0.97);
+    color: #222;
+    padding: 32px 24px 24px 24px;
+    transition: right 0.3s cubic-bezier(.4,2,.6,1);
+    z-index: 1050;
+    box-shadow: -4px 0 16px rgba(0,0,0,0.13);
+    display: flex;
+    flex-direction: column;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+    backdrop-filter: blur(6px);
+">
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 28px;">
+        <img src="{{ url_for('static', filename='img/avatar.png') }}" alt="Avatar" style="width: 64px; height: 64px; border-radius: 50%; border: 2px solid #0d6efd;">
+        <div>
+            <div style="font-weight: bold; font-size: 1.15rem; color: #0d6efd;">{{ usuario.nombre }}</div>
+            <div style="font-size: 0.98rem; color: #555;">@{{ usuario.username }}</div>
+            <div style="font-size: 0.93rem; color: #888;">{{ usuario.profesion }}</div>
+        </div>
+        <button onclick="togglePerfilPanel()" style="margin-left:auto;background:none;border:none;color:#0d6efd;font-size:28px;line-height:1;">×</button>
+    </div>
+    <hr style="margin: 0 0 18px 0;">
+    <div style="margin-bottom: 18px;">
+        <div style="font-size: 0.97rem; margin-bottom: 6px;"><i class="bi bi-envelope"></i> <span style="color:#444;">{{ usuario.correo }}</span></div>
+    </div>
+    <a href="{{ url_for('perfil') }}" class="btn btn-outline-primary w-100 mb-2" style="font-weight:500;">
+        <i class="bi bi-person"></i> Ver perfil completo
+    </a>
+    <a href="{{ url_for('logout') }}" class="btn btn-outline-danger w-100" style="font-weight:500;">
+        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+    </a>
+    <div style="flex:1"></div>
+    <div style="text-align:center; color:#bbb; font-size:13px; margin-top:24px;">
+        <i class="bi bi-hospital"></i> Sistema Biomédico
+    </div>
+</div>
+<br><br><br>
+
+
+
+
     <div class="main-box">
         <h1><i class="bi bi-clipboard-data"></i> Resumen de Órdenes de Trabajo de Mantenimiento (OTM)</h1>
 
@@ -137,5 +207,19 @@
 
 
     </div>
+
+
+
+   <script>
+function togglePerfilPanel() {
+    const panel = document.getElementById("perfil-panel");
+    if (panel.style.right === "0px") {
+        panel.style.right = "-340px"; // <-- aquí debe ser -340px
+    } else {
+        panel.style.right = "0px";
+    }
+}
+</script>
+
 </body>
 </html>

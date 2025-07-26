@@ -11,7 +11,8 @@ from datetime import datetime
 from DownloadPDFformat import generar_pdf_otm_completo_formato
 app = Flask(__name__)
 app.secret_key = 'supersecreto'  # Necesario para sesiones
-
+import json
+import os
 # Variables globales para almacenar datos de OTM
 otm_parcial = {}   # Guarda temporalmente los datos del Formulario 1
 otm_data = [
@@ -41,6 +42,11 @@ otm_data_completo= []   # Lista de OTMs completas
 @app.route('/')
 def inicio():
     return redirect(url_for('login'))
+
+
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -52,20 +58,31 @@ def login():
         # Buscar en técnicos
         for user in tecnicosingenieros:
             if user['username'] == username and user['password'] == password:
-                session['usuario'] = username
+                session['usuario'] = user  # Guarda todo el usuario
                 return redirect(url_for('formulario'))  # Ruta para técnico
 
         # Buscar en licenciadas
         for user in licenciadas:
             if user['username'] == username and user['password'] == password:
-                session['usuario'] = username
+                session['usuario'] = user
                 return redirect(url_for('dashboardLicenciada'))  # Ruta para licenciada
 
         # Buscar en secretarias
         for user in secretarias:
             if user['username'] == username and user['password'] == password:
-                session['usuario'] = username
+                session['usuario'] = user
                 return redirect(url_for('dashboardSecretaria'))  # Ruta para secretaria
+
+     # Buscar en usuarios registrados (JSON)
+        for user in usuarios_registrados:
+            if user['username'] == username and user['password'] == password:
+                session['usuario'] = user
+                if user['rol'] == 'SEC':
+                    return redirect(url_for('dashboardSecretaria'))
+                elif user['rol'] == 'ING':
+                    return redirect(url_for('formulario'))
+                elif user['rol'] == 'LIC':
+                    return redirect(url_for('dashboardLicenciada'))
 
         error = 'Usuario o contraseña incorrectos'
 
@@ -130,8 +147,8 @@ def formulario2():
 def resumen():
     if 'usuario' not in session:
         return redirect(url_for('login'))
-    return render_template('resumen.html', otms=otm_data_completo)
-
+    usuario = session['usuario']
+    return render_template('resumen.html', otms=otm_data_completo, usuario=usuario)
 
 
 
@@ -182,6 +199,10 @@ def descargar_pdf(index):
 
 @app.route("/dashboardSecretaria", methods=["GET", "POST"])
 def dashboardSecretaria():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    usuario = session['usuario']  # <--- Agrega esto
+
     filtradas = otm_data  # Por defecto se muestran todas
 
     if request.method == "POST":
@@ -189,7 +210,6 @@ def dashboardSecretaria():
         hasta = request.form.get("fecha_fin")
         estado = request.form.get("estado")
         numero = request.form.get("codigo")
-
 
         def cumple(otm):
             cumple_fecha = True
@@ -202,15 +222,14 @@ def dashboardSecretaria():
                 cumple_fecha = cumple_fecha and datetime.strptime(otm["fecha"], "%Y-%m-%d") <= datetime.strptime(hasta, "%Y-%m-%d")
             if estado:
                 cumple_estado = otm["estado"].lower() == estado.lower()
-
             if numero:
                 cumple_numero = numero.lower() in otm["numero"].lower()
-
             return cumple_fecha and cumple_estado and cumple_numero
 
         filtradas = [otm for otm in otm_data if cumple(otm)]
 
-    return render_template("dashboardSecretaria.html", otms=filtradas)
+    return render_template("dashboardSecretaria.html", otms=filtradas, usuario=usuario)
+
 
 
 
@@ -250,7 +269,147 @@ def editar_otm(index):
         return render_template('editar_otm.html', otm=otm_data_completo[index], index=index)
     return redirect(url_for('resumen'))
 
+@app.route('/perfil')
+def perfil():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    usuario = session['usuario']
+    return render_template('perfil.html', usuario=usuario)
+
+
+
+@app.route('/dashboardLicenciada', methods=['GET', 'POST'])
+def dashboardLicenciada():
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+    usuario = session['usuario']
+
+    # Filtra las OTMs según lo que quieras mostrar a la licenciada
+    filtradas = otm_data  # O aplica filtros si lo deseas
+
+    if request.method == "POST":
+        desde = request.form.get("fecha_inicio")
+        hasta = request.form.get("fecha_fin")
+        estado = request.form.get("estado")
+        numero = request.form.get("codigo")
+
+        def cumple(otm):
+            cumple_fecha = True
+            cumple_estado = True
+            cumple_numero = True
+
+            if desde:
+                cumple_fecha = datetime.strptime(otm["fecha"], "%Y-%m-%d") >= datetime.strptime(desde, "%Y-%m-%d")
+            if hasta:
+                cumple_fecha = cumple_fecha and datetime.strptime(otm["fecha"], "%Y-%m-%d") <= datetime.strptime(hasta, "%Y-%m-%d")
+            if estado:
+                cumple_estado = otm["estado"].lower() == estado.lower()
+            if numero:
+                cumple_numero = numero.lower() in otm["numero"].lower()
+            return cumple_fecha and cumple_estado and cumple_numero
+
+        filtradas = [otm for otm in otm_data if cumple(otm)]
+
+    return render_template("dashboardLicenciada.html", otms=filtradas, usuario=usuario)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#PANEL DE REGISTRO DE USUARIOS
+USUARIOS_FILE = 'usuarios_registrados.json'
+
+def cargar_usuarios():
+    if os.path.exists(USUARIOS_FILE):
+        with open(USUARIOS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return []
+
+def guardar_usuarios(usuarios):
+    with open(USUARIOS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(usuarios, f, ensure_ascii=False, indent=2)
+
+usuarios_registrados = cargar_usuarios()
+@app.route('/registrarse', methods=['GET'])
+def registrarse():
+    return render_template('registrarse.html')
+
+@app.route('/registrate', methods=['POST'])
+def registrate():
+    nombre = request.form['nombre']
+    correo = request.form['correo']
+    username = request.form['username']
+    password = request.form['password']
+    rol = request.form['rol']  # <-- Nuevo
+
+    # Verifica si el usuario ya existe
+    for lista in [licenciadas, tecnicosingenieros, secretarias, usuarios_registrados]:
+        for user in lista:
+            if user['username'] == username:
+                error = "El usuario ya existe"
+                return render_template('registrarse.html', error=error)
+
+    # Define la profesión según el rol
+    if rol == 'SEC':
+        profesion = 'Secretaria'
+        redirect_url = 'dashboardSecretaria'
+    elif rol == 'ING':
+        profesion = 'Técnico/Ingeniero'
+        redirect_url = 'formulario'
+    elif rol == 'LIC':
+        profesion = 'Licenciada'
+        redirect_url = 'dashboardLicenciada'
+    else:
+        profesion = ''
+        redirect_url = 'login'
+
+    nuevo_usuario = {
+        'username': username,
+        'password': password,
+        'nombre': nombre,
+        'profesion': profesion,
+        'correo': correo,
+        'rol': rol
+    }
+    usuarios_registrados.append(nuevo_usuario)
+    guardar_usuarios(usuarios_registrados)
+    session['usuario'] = nuevo_usuario
+    return redirect(url_for(redirect_url))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
-
 
